@@ -7,20 +7,20 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | User activity                                       | Frontend component | Backend endpoints | Database SQL |
 | --------------------------------------------------- | ------------------ | ----------------- | ------------ |
 | View home page                                      |                    |                   |              |
-| Register new user<br/>(t@jwt.com, pw: test)         |                    |                   |              |
-| Login new user<br/>(t@jwt.com, pw: test)            |                    |                   |              |
-| Order pizza                                         |                    |                   |              |
-| Verify pizza                                        |                    |                   |              |
+| Register new user<br/>(t@jwt.com, pw: test)         |                    | '/api/auth', 'POST', { name, email, password }                  |              |
+| Login new user<br/>(t@jwt.com, pw: test)            |                    | '/api/auth', 'PUT', { email, password }                  |              |
+| Order pizza                                         |                    | '/api/order', 'POST', order                  |              |
+| Verify pizza                                        |                    | pizzaFactoryUrl + '/api/order/verify', 'POST', { jwt }                  |              |
 | View profile page                                   |                    |                   |              |
 | View franchise<br/>(as diner)                       |                    |                   |              |
-| Logout                                              |                    |                   |              |
+| Logout                                              |                    | '/api/auth', 'DELETE'                  |              |
 | View About page                                     |                    |                   |              |
 | View History page                                   |                    |                   |              |
-| Login as franchisee<br/>(f@jwt.com, pw: franchisee) |                    |                   |              |
+| Login as franchisee<br/>(f@jwt.com, pw: franchisee) |                    | '/api/auth', 'PUT', { email, password }                  |              |
 | View franchise<br/>(as franchisee)                  |                    |                   |              |
-| Create a store                                      |                    |                   |              |
-| Close a store                                       |                    |                   |              |
-| Login as admin<br/>(a@jwt.com, pw: admin)           |                    |                   |              |
+| Create a store                                      |                    | `/api/franchise/${franchise.id}/store`, 'POST', store                  |              |
+| Close a store                                       |                    | `/api/franchise/${franchise.id}/store/${store.id}`, 'DELETE'                  |              |
+| Login as admin<br/>(a@jwt.com, pw: admin)           |                    | '/api/auth', 'PUT', { email, password }                  |              |
 | View Admin page                                     |                    |                   |              |
-| Create a franchise for t@jwt.com                    |                    |                   |              |
-| Close the franchise for t@jwt.com                   |                    |                   |              |
+| Create a franchise for t@jwt.com                    |                    | '/api/franchise', 'POST', franchise   |              |
+| Close the franchise for t@jwt.com                   |                    | `/api/franchise/${franchise.id}`, 'DELETE' |              |
