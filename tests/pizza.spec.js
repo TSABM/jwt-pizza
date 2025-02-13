@@ -99,12 +99,18 @@ test('purchase with login', async ({ page }) => {
     await expect(page.getByText('0.008')).toBeVisible();
   });
 
-  /*
+
 //franchise stuff
 test("test franchises", async({page})=>{
-    //creat a franchise
-
-    //login as franchise? (maybe not necissary?)
+    //create a new franchise
+    await page.route('*/**/api/franchise', async (route) => {
+        const franchiseRes = [
+            { id: 2, name: 'pizzaPocket', admins: [{ id: 4, name: 'pizza franchisee', email: 'f@jwt.com' }], 
+            stores: [{ id: 4, name: 'SLC', totalRevenue: 0 }] }
+        ];
+        expect(route.request().method()).toBe('POST');
+        await route.fulfill({ json: franchiseRes });
+      });
     
     //view franchise stuff
     
@@ -115,7 +121,7 @@ test("test franchises", async({page})=>{
     //delete franchise store
 
 })
- */ 
+  
 
 //admin stuff
   //view admin stuff
