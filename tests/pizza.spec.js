@@ -100,10 +100,21 @@ test('purchase with login', async ({ page }) => {
   });
 
 //franchise stuff
-  //view franchise stuff
-  //create franchise
-  //create franchise store
-  //delete franchise store
+test("test franchises", async({page})=>{
+    //creat a franchise
+
+    //login as franchise? (maybe not necissary?)
+    
+    //view franchise stuff
+    
+    //create franchise
+    
+    //create franchise store
+    
+    //delete franchise store
+
+})
+  
 
 //admin stuff
   //view admin stuff
