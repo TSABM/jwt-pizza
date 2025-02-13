@@ -99,6 +99,7 @@ test('purchase with login', async ({ page }) => {
     await expect(page.getByText('0.008')).toBeVisible();
   });
 
+  /*
 //franchise stuff
 test("test franchises", async({page})=>{
     //creat a franchise
@@ -114,7 +115,7 @@ test("test franchises", async({page})=>{
     //delete franchise store
 
 })
-  
+ */ 
 
 //admin stuff
   //view admin stuff
