@@ -440,7 +440,7 @@ test("test add and delete store", async ({page})=>{
               "email": "test@test.com",
               "roles": [
                 {
-                  "role": "Franchisee on 81"
+                  "role": "franchisee"
                 }
               ]
             },
