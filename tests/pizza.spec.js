@@ -434,8 +434,8 @@ test("test admin", async ({page})=>{
     await page.getByRole('textbox', { name: 'franchisee admin email' }).fill('a@jwt.com');
     await page.getByRole('button', { name: 'Create' }).click();
 
-    //await page.getByRole('row', { name: 'test3 常用名字 Close' }).getByRole('button').click();
-    //await page.getByRole('button', { name: 'Close' }).click();
+    await page.getByRole('row', { name: 'testFranchise x1np4lkpbq Close' }).getByRole('button').click();
+    await page.getByRole('button', { name: 'Close' }).click();
 })
   //view admin stuff
   //delete a franchise?
