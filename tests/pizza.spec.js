@@ -122,8 +122,8 @@ test("test franchises", async({page})=>{
 test("test admin", async ({page})=>{
     //login admin mock
     await page.route('*/**/api/auth', async (route) => {
-      const loginReq = { email: 'd@jwt.com', password: 'a' };
-      const loginRes = { user: { id: 3, name: 'Kai Chen', email: 'd@jwt.com', roles: [{ role: 'diner' }] }, token: 'abcdef' };
+      const loginReq = { email: 'a@jwt.com', password: 'admin' };
+      const loginRes = { user: { id: 3, name: '常用名字', email: 'a@jwt.com', roles: [{ role: 'admin' }] }, token: 'abcdef' };
       expect(route.request().method()).toBe('PUT');
       expect(route.request().postDataJSON()).toMatchObject(loginReq);
       await route.fulfill({ json: loginRes });
