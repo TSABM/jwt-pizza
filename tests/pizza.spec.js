@@ -100,22 +100,49 @@ test('purchase with login', async ({ page }) => {
   });
 
 
-  /*
-//franchise stuff
-test("test franchises", async({page})=>{
-    //create a new franchise
-    
-    
-    //view franchise stuff
-    
-    //create franchise
-    
-    //create franchise store
-    
-    //delete franchise store
-
+test('diner dashboard', async ({ page }) => {
+  //register
+  await page.route('*/**/api/auth', async (route) => {
+    const registerReq = {
+      "name": "bilbo",
+      "email": "bilbo@baggins.com",
+      "password": "bilbo"
+    };
+    const registerRes = {
+      "user": {
+        "name": "bilbo",
+        "email": "bilbo@baggins.com",
+        "roles": [
+          {
+            "role": "diner"
+          }
+        ],
+        "id": 225
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYmlsYm8yIiwiZW1haWwiOiJiaWxibzJAYmFnZ2lucy5jb20iLCJyb2xlcyI6W3sicm9sZSI6ImRpbmVyIn1dLCJpZCI6MjI1LCJpYXQiOjE3Mzk1NjY0MjB9.MEg_2_y3MDsucMNZ5cNblcLaRO6xUah7oAlvzs3-ndw"
+    };
+    expect(route.request().method()).toBe('POST');
+    expect(route.request().postDataJSON()).toMatchObject(registerReq);
+    await route.fulfill({ json: registerRes });
+  });
+  //get dashboard
+  await page.route('*/**/api/order', async (route) => {
+    const dashboardRes = {"dinerId":223,"orders":[],"page":1}
+    expect(route.request().method()).toBe('GET');
+    //expect(route.request().postDataJSON()).toMatchObject(dashboardRes);
+    await route.fulfill({ json: dashboardRes });
+  })
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Register' }).click();
+  await page.getByRole('textbox', { name: 'Full name' }).click();
+  await page.getByRole('textbox', { name: 'Full name' }).fill('bilbo');
+  await page.getByRole('textbox', { name: 'Email address' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('bilbo@baggins.com');
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('bilbo');
+  await page.getByRole('button', { name: 'Register' }).click();
+  await page.getByRole('link', { name: 'b', exact: true }).click();
 })
-*/
   
 
 //admin stuff
