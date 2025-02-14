@@ -100,17 +100,11 @@ test('purchase with login', async ({ page }) => {
   });
 
 
+  /*
 //franchise stuff
 test("test franchises", async({page})=>{
     //create a new franchise
-    await page.route('*/**/api/franchise', async (route) => {
-        const franchiseRes = [
-            { id: 2, name: 'pizzaPocket', admins: [{ id: 4, name: 'pizza franchisee', email: 'f@jwt.com' }], 
-            stores: [{ id: 4, name: 'SLC', totalRevenue: 0 }] }
-        ];
-        expect(route.request().method()).toBe('POST');
-        await route.fulfill({ json: franchiseRes });
-      });
+    
     
     //view franchise stuff
     
@@ -121,8 +115,270 @@ test("test franchises", async({page})=>{
     //delete franchise store
 
 })
+*/
   
 
 //admin stuff
+test("test admin", async (route)=>{
+    //login admin mock
+    await page.route('*/**/api/auth', async (route) => {
+        const adminloginReq = { email: 'a@jwt.com', password: 'admin' };
+        const adminLoginResp = {
+            "user": {
+              "id": 1,
+              "name": "常用名字",
+              "email": "a@jwt.com",
+              "roles": [
+                {
+                  "role": "admin"
+                }
+              ]
+            },
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IuW4uOeUqOWQjeWtlyIsImVtYWlsIjoiYUBqd3QuY29tIiwicm9sZXMiOlt7InJvbGUiOiJhZG1pbiJ9XSwiaWF0IjoxNzM5NDkwNzI4fQ.IMDOYpQ35SBguKj6Ddbi9_UsGIbRsYxFn2CfVgWtQBg"
+          }
+        expect(route.request().method()).toBe('PUT');
+        expect(route.request().postDataJSON()).toMatchObject(adminloginReq);
+        await route.fulfill({ json: adminLoginResp });
+      });
+    //mock for admin add franchise
+    await page.route('*/**/api/franchise', async (route) => {
+        const franchiseRes = [
+            {
+              "id": 18,
+              "name": "0i20r9lm7xTestFranchise",
+              "admins": [
+                {
+                  "id": 90,
+                  "name": "0i20r9lm7x",
+                  "email": "0i20r9lm7x@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 8,
+              "name": "2jpg8vig00TestFranchise",
+              "admins": [
+                {
+                  "id": 70,
+                  "name": "2jpg8vig00",
+                  "email": "2jpg8vig00@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 17,
+              "name": "3pdp07ilqnTestFranchise",
+              "admins": [
+                {
+                  "id": 88,
+                  "name": "3pdp07ilqn",
+                  "email": "3pdp07ilqn@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 9,
+              "name": "3t3f8tr86eTestFranchise",
+              "admins": [
+                {
+                  "id": 72,
+                  "name": "3t3f8tr86e",
+                  "email": "3t3f8tr86e@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 10,
+              "name": "6o74dgq16mTestFranchise",
+              "admins": [
+                {
+                  "id": 74,
+                  "name": "6o74dgq16m",
+                  "email": "6o74dgq16m@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 22,
+              "name": "andmnbbk90TestFranchise",
+              "admins": [
+                {
+                  "id": 99,
+                  "name": "andmnbbk90",
+                  "email": "andmnbbk90@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 14,
+              "name": "eu0fzou09aTestFranchise",
+              "admins": [
+                {
+                  "id": 82,
+                  "name": "eu0fzou09a",
+                  "email": "eu0fzou09a@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 15,
+              "name": "h64aie7o6cTestFranchise",
+              "admins": [
+                {
+                  "id": 85,
+                  "name": "h64aie7o6c",
+                  "email": "h64aie7o6c@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 24,
+              "name": "i6j6wjl6xwTestFranchise",
+              "admins": [
+                {
+                  "id": 103,
+                  "name": "i6j6wjl6xw",
+                  "email": "i6j6wjl6xw@admin.com"
+                }
+              ],
+              "stores": [
+                {
+                  "id": 14,
+                  "name": "47kar8ci4n",
+                  "totalRevenue": 0.0042
+                }
+              ]
+            },
+            {
+              "id": 19,
+              "name": "i9m8j97cykTestFranchise",
+              "admins": [
+                {
+                  "id": 92,
+                  "name": "i9m8j97cyk",
+                  "email": "i9m8j97cyk@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 12,
+              "name": "iee4k7cwzfTestFranchise",
+              "admins": [
+                {
+                  "id": 77,
+                  "name": "iee4k7cwzf",
+                  "email": "iee4k7cwzf@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 11,
+              "name": "j4gleki0xgTestFranchise",
+              "admins": [
+                {
+                  "id": 76,
+                  "name": "j4gleki0xg",
+                  "email": "j4gleki0xg@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 21,
+              "name": "liyiq5xd1rTestFranchise",
+              "admins": [
+                {
+                  "id": 97,
+                  "name": "liyiq5xd1r",
+                  "email": "liyiq5xd1r@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 13,
+              "name": "okke5tjl6mTestFranchise",
+              "admins": [
+                {
+                  "id": 80,
+                  "name": "okke5tjl6m",
+                  "email": "okke5tjl6m@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 1,
+              "name": "pizzaPocket",
+              "admins": [
+                {
+                  "id": 3,
+                  "name": "pizza franchisee",
+                  "email": "f@jwt.com"
+                }
+              ],
+              "stores": [
+                {
+                  "id": 1,
+                  "name": "SLC",
+                  "totalRevenue": 0.0836
+                }
+              ]
+            },
+            {
+              "id": 20,
+              "name": "r2oup57s1eTestFranchise",
+              "admins": [
+                {
+                  "id": 95,
+                  "name": "r2oup57s1e",
+                  "email": "r2oup57s1e@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 4,
+              "name": "testFranchise",
+              "admins": [
+                {
+                  "id": 61,
+                  "name": "x1np4lkpbq",
+                  "email": "x1np4lkpbq@admin.com"
+                }
+              ],
+              "stores": []
+            },
+            {
+              "id": 16,
+              "name": "v90xakbcfnTestFranchise",
+              "admins": [
+                {
+                  "id": 87,
+                  "name": "v90xakbcfn",
+                  "email": "v90xakbcfn@admin.com"
+                }
+              ],
+              "stores": []
+            }
+          ];
+        expect(route.request().method()).toBe('GET');
+        await route.fulfill({ json: franchiseRes });
+      });
+    //mock for admin delete franchise?
+
+
+    
+})
   //view admin stuff
   //delete a franchise?
