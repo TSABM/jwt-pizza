@@ -119,7 +119,7 @@ test("test franchises", async({page})=>{
   
 
 //admin stuff
-test("test admin", async (route)=>{
+test("test admin", async ({page})=>{
     //login admin mock
     await page.route('*/**/api/auth', async (route) => {
         const adminloginReq = { email: 'a@jwt.com', password: 'admin' };
@@ -142,6 +142,7 @@ test("test admin", async (route)=>{
       });
     //mock for admin add franchise
     await page.route('*/**/api/franchise', async (route) => {
+        if (route.request().method() === 'GET') {
         const franchiseRes = [
             {
               "id": 18,
@@ -374,11 +375,67 @@ test("test admin", async (route)=>{
           ];
         expect(route.request().method()).toBe('GET');
         await route.fulfill({ json: franchiseRes });
+        }
+        else if (route.request().method() === 'POST'){
+            const createRes = { "name": "test3", "admins": [{ "email": "a@jwt.com", "id": 1, "name": "常用名字" }], "id": 73 }
+            /*
+            const createReq = {
+                "stores": [],
+                "id": 73,
+                "name": "test3",
+                "admins": [
+                  {
+                    "email": "a@jwt.com",
+                    "id": 1,
+                    "name": "常用名字"
+                  }
+                ]
+              }
+                */
+            const createReq = {
+                "stores": [],
+                "id": "",
+                "name": "test3",
+                "admins": [
+                  {
+                    "email": "a@jwt.com"
+                  }
+                ]
+              }
+              expect(route.request().method()).toBe('POST');
+              expect(route.request().postDataJSON()).toMatchObject(createReq);
+              await route.fulfill({ json: createRes }); 
+        }
       });
     //mock for admin delete franchise?
+    await page.route('*/**/api/franchise/*', async (route) => {
+        const deleteRes = {
+            "message": "franchise deleted"
+          };
+        expect(route.request().method()).toBe('DELETE');
+        await route.fulfill({ json: deleteRes });
+      });
 
+    //test
+    await page.goto('/');
+    await page.getByRole('link', { name: 'Login' }).click();
+    await page.getByRole('textbox', { name: 'Email address' }).click();
+    await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+    await page.getByRole('textbox', { name: 'Password' }).click();
+    await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+    await page.getByRole('button', { name: 'Login' }).click();
 
-    
+    await page.getByRole('link', { name: 'Admin' }).click();
+
+    await page.getByRole('button', { name: 'Add Franchise' }).click();
+    await page.getByRole('textbox', { name: 'franchise name' }).click();
+    await page.getByRole('textbox', { name: 'franchise name' }).fill('test3');
+    await page.getByRole('textbox', { name: 'franchisee admin email' }).click();
+    await page.getByRole('textbox', { name: 'franchisee admin email' }).fill('a@jwt.com');
+    await page.getByRole('button', { name: 'Create' }).click();
+
+    //await page.getByRole('row', { name: 'test3 常用名字 Close' }).getByRole('button').click();
+    //await page.getByRole('button', { name: 'Close' }).click();
 })
   //view admin stuff
   //delete a franchise?
