@@ -122,24 +122,12 @@ test("test franchises", async({page})=>{
 test("test admin", async ({page})=>{
     //login admin mock
     await page.route('*/**/api/auth', async (route) => {
-        const adminloginReq = { email: 'a@jwt.com', password: 'admin' };
-        const adminLoginResp = {
-            "user": {
-              "id": 1,
-              "name": "常用名字",
-              "email": "a@jwt.com",
-              "roles": [
-                {
-                  "role": "admin"
-                }
-              ]
-            },
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IuW4uOeUqOWQjeWtlyIsImVtYWlsIjoiYUBqd3QuY29tIiwicm9sZXMiOlt7InJvbGUiOiJhZG1pbiJ9XSwiaWF0IjoxNzM5NDkwNzI4fQ.IMDOYpQ35SBguKj6Ddbi9_UsGIbRsYxFn2CfVgWtQBg"
-          }
-        expect(route.request().method()).toBe('PUT');
-        expect(route.request().postDataJSON()).toMatchObject(adminloginReq);
-        await route.fulfill({ json: adminLoginResp });
-      });
+      const loginReq = { email: 'd@jwt.com', password: 'a' };
+      const loginRes = { user: { id: 3, name: 'Kai Chen', email: 'd@jwt.com', roles: [{ role: 'diner' }] }, token: 'abcdef' };
+      expect(route.request().method()).toBe('PUT');
+      expect(route.request().postDataJSON()).toMatchObject(loginReq);
+      await route.fulfill({ json: loginRes });
+    });
     //mock for admin add franchise
     await page.route('*/**/api/franchise', async (route) => {
         if (route.request().method() === 'GET') {
@@ -439,3 +427,112 @@ test("test admin", async ({page})=>{
 })
   //view admin stuff
   //delete a franchise?
+
+
+test("test add and delete store", async ({page})=>{
+    //login mock
+    await page.route('*/**/api/auth', async (route) => {
+        const loginReq = { email: 'test@test.com', password: 'test' };
+        const loginResp = {
+            "user": {
+              "id": "",
+              "name": "test",
+              "email": "test@test.com",
+              "roles": [
+                {
+                  "role": "Franchisee on 81"
+                }
+              ]
+            },
+            "token": "eyJpZCI6MSwibmFtZSI6IuW4uOeUqOWQjeWtlyIsImVtYWlsIjoiYUBqd3QuY29tIiwicm9sZXMiOlt7InJvbGUiOiJhZG1pbiJ9XSwiaWF0IjoxNzM5NTYxMzc2fQ"
+          }
+        expect(route.request().method()).toBe('PUT');
+        expect(route.request().postDataJSON()).toMatchObject(loginReq);
+        await route.fulfill({ json: loginResp });
+      });
+    
+      //get franchises mock
+      
+      await page.route('*/**/api/franchise', async (route) => {
+        const franchiseRes = [
+          {
+              "id": 81,
+              "name": "experimental",
+              "admins": [
+                  {
+                      "id": 6,
+                      "name": "test",
+                      "email": "test@test.com"
+                  }
+              ],
+              "stores": [
+                  {
+                      "id": 36,
+                      "name": "testStore1",
+                      "totalRevenue": 0
+                  },
+                  {
+                      "id": 38,
+                      "name": "testStore3",
+                      "totalRevenue": 0
+                  }
+              ]
+          }
+      ];
+        expect(route.request().method()).toBe('GET');
+        await route.fulfill({ json: franchiseRes });
+      });
+      
+
+      //add franchise store mock
+      await page.route('*/**/api/franchise/*/store', async (route) => {
+        const createStoreReq = {"id": "", name: "testStore2"}
+        const createStoreRes = {"id":38,"franchiseId":81,"name":"testStore2"};
+        expect(route.request().method()).toBe('POST');
+        expect(route.request().postDataJSON()).toMatchObject(createStoreReq);
+        await route.fulfill({ json: createStoreRes });
+      });
+
+      //close store mock
+      await page.route('*/**/api/franchise/*/store/*', async (route) => {
+        const deleteRes = {
+            "message": 'store deleted'
+          };
+        expect(route.request().method()).toBe('DELETE');
+        await route.fulfill({ json: deleteRes });
+      });
+
+
+  //get franchises needs defined (include test franchise return)
+  //
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Login' }).click();
+  
+  //login
+  await page.getByRole('textbox', { name: 'Email address' }).fill('test@test.com');
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('test');
+  await page.getByRole('button', { name: 'Login' }).click();
+
+  //navigate
+  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
+
+  //create an existing store
+  //await page.getByRole('button', { name: 'Create store' }).click();
+  //await page.getByRole('textbox', { name: 'store name' }).click();
+  //await page.getByRole('textbox', { name: 'store name' }).fill('testStore1');
+  //await page.getByRole('button', { name: 'Create' }).click();
+
+  //create a new store
+  await page.getByRole('button', { name: 'Create store' }).click();
+  await page.getByRole('textbox', { name: 'store name' }).click();
+  await page.getByRole('textbox', { name: 'store name' }).fill('testStore2');
+  await page.getByRole('button', { name: 'Create' }).click();
+  
+  //nav
+  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
+
+  //delete a store
+  //await page.getByRole('row', { name: 'testStore1 0 ₿ Close' }).getByRole('button').click();
+  //await page.getByRole('button', { name: 'Close' }).click();
+})
