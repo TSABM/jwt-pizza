@@ -435,25 +435,24 @@ test("test add and delete store", async ({page})=>{
         const loginReq = { email: 'test@test.com', password: 'test' };
         const loginResp = {
             "user": {
-              "id": "",
-              "name": "test",
-              "email": "test@test.com",
-              "roles": [
-                {
-                  "role": "franchisee"
-                }
+              id: 42,
+              name: "test",
+              email: "test@test.com",
+              roles: [{role: "franchisee"}
               ]
             },
-            "token": "eyJpZCI6MSwibmFtZSI6IuW4uOeUqOWQjeWtlyIsImVtYWlsIjoiYUBqd3QuY29tIiwicm9sZXMiOlt7InJvbGUiOiJhZG1pbiJ9XSwiaWF0IjoxNzM5NTYxMzc2fQ"
+            token: "eyJpZCI6MSwibmFtZSI6IuW4uOeUqOWQjeWtlyIsImVtYWlsIjoiYUBqd3QuY29tIiwicm9sZXMiOlt7InJvbGUiOiJhZG1pbiJ9XSwiaWF0IjoxNzM5NTYxMzc2fQ"
           }
         expect(route.request().method()).toBe('PUT');
         expect(route.request().postDataJSON()).toMatchObject(loginReq);
         await route.fulfill({ json: loginResp });
+        await page.goto('/');
+        await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
       });
     
       //get franchises mock
       
-      await page.route('*/**/api/franchise', async (route) => {
+      await page.route('*/**/api/franchise/42', async (route) => {
         const franchiseRes = [
           {
               "id": 81,
@@ -515,14 +514,14 @@ test("test add and delete store", async ({page})=>{
   await page.getByRole('button', { name: 'Login' }).click();
 
   //navigate
-  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
+  //moved to mock
 
   //create an existing store
   //await page.getByRole('button', { name: 'Create store' }).click();
   //await page.getByRole('textbox', { name: 'store name' }).click();
   //await page.getByRole('textbox', { name: 'store name' }).fill('testStore1');
   //await page.getByRole('button', { name: 'Create' }).click();
-
+  
   //create a new store
   await page.getByRole('button', { name: 'Create store' }).click();
   await page.getByRole('textbox', { name: 'store name' }).click();
@@ -533,6 +532,6 @@ test("test add and delete store", async ({page})=>{
   await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
 
   //delete a store
-  //await page.getByRole('row', { name: 'testStore1 0 ₿ Close' }).getByRole('button').click();
-  //await page.getByRole('button', { name: 'Close' }).click();
+  await page.getByRole('row', { name: 'testStore1 0 ₿ Close' }).getByRole('button').click();
+  await page.getByRole('button', { name: 'Close' }).click();
 })
