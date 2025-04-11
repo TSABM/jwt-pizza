@@ -15,6 +15,8 @@ Researching the origin of the Agile movement
 
 ## Why it started
 - looks like a pushback against business culture and practices that frustrated them
+- trying to fix over focus on rigid rules and practices that make dev harder not easier
+- trying to focus on making sure good steps and progress in dev rather than focusing only on the final vision
 ## How it works
 - The agile manifesto reads:
 "We are uncovering better ways of developing software by doing it and helping others do it. Through this work we have come to value:
@@ -36,7 +38,6 @@ Continuous attention to technical excellence and good design.
 Simplicity—the art of maximizing the amount of work not done—is essential.
 Best architectures, requirements, and designs emerge from self-organizing teams.
 Regularly, the team reflects on how to become more effective, and adjusts accordingly.
-
 - focus on short development times and incremental changes
 - focus on short "scrum" meetings instead of lengthy ones that focus on accountability for next steps
 
